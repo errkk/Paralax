@@ -162,7 +162,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: bold; }
 
 
 
-
+#map_canvas{width:700px; height:500px; margin:100px auto; display:block; border:2px solid #ccc;}
 
 
 
