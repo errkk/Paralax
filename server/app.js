@@ -16,13 +16,14 @@ io.sockets.on('connection', function (socket) {
 
 	// When an FE marker is moved
 	socket.on('newlocation', function (data) {
+		// send to everyone so the marker is moved
 		io.sockets.emit('move', { Na : data.latLng.Na, Oa : data.latLng.Oa });
 		locations.push(data);
 	});
 	
-	// When an FE marker is moved
+	// When its dragged
 	socket.on('newcentre', function (data) {
-		io.sockets.emit('movecentre', { Na : data.latLng.Na, Oa : data.latLng.Oa });
+		socket.broadcast.emit('movecentre', { Na : data.latLng.Na, Oa : data.latLng.Oa });
 
 	});
 });
