@@ -1,19 +1,11 @@
 
-var socket = io.connect('http://s.s2.errkk.co:8080');
-
-
-
 
 
 (function(global){
 	var Module = (function(){
-		
-		var secret = 'sdsd',
+		var socket,
 			center,
-			position = getPosition(function(coords){
-				center = new google.maps.LatLng(coords.lat,coords.lng);
-				createmap();
-			}),
+			position,
 			mapDiv = document.getElementById('map_canvas'),
 			map,
 			marker,
@@ -67,18 +59,11 @@ var socket = io.connect('http://s.s2.errkk.co:8080');
 				map: map,
 				draggable : true
 		    });
-		
-			// google.maps.event.addListener(marker, 'dragend', function() {
-			//     var center = marker.getPosition();
-			//     socket.emit('newlocation', { latLng: center });
-			// });
 			
 			google.maps.event.addListener(map, 'click', function(event){
 			    var center = event.latLng;
 			    socket.emit('newlocation', { latLng: center });			
 			});
-			
-			
 			
 			socket.emit('ready',{});
 			
@@ -105,11 +90,9 @@ var socket = io.connect('http://s.s2.errkk.co:8080');
 		
 		function moveMarker(latLng)
 		{
-			// var latLng = new google.maps.LatLng(51.5,-0.2);
 			map.panTo( latLng );
 			marker.setPosition(latLng);
-			addNewPoint(latLng);
-			
+			addNewPoint(latLng);			
 		}
 		
 		function addNewPoint(latLng) {
@@ -121,11 +104,8 @@ var socket = io.connect('http://s.s2.errkk.co:8080');
 		{
 			navigator.geolocation.getCurrentPosition( 
 				function (position) { 
-					
 					var coords = {lat:position.coords.latitude,lng:position.coords.longitude};
-					
 					callback(coords); 
-
 				}, 
 				function (error)
 				{
@@ -156,19 +136,22 @@ var socket = io.connect('http://s.s2.errkk.co:8080');
 		return {
 			init : function()
 			{
-			
-			},
-			moveMarker : moveMarker
-			
+
+				socket = io.connect('http://' + window.location.hostname + ':8080');
+				position = getPosition(function(coords){
+					center = new google.maps.LatLng(coords.lat,coords.lng);
+					createmap();
+				})
+			}
 		}
-		
 		
 	})();
 	
 	global.maps = Module;
-
 	
 })(this);
 
 
-window.maps.init();
+
+
+window.maps.init()
