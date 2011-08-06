@@ -47,5 +47,8 @@ acc.on('connection', function (socket) {
 	socket.on('remotelog',function(data){	
 		socket.broadcast.emit('touch', data );
 	});
+	socket.on('movement',function(data){	
+		socket.broadcast.emit('move', data );
+	});
 });
 

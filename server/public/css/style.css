@@ -162,9 +162,10 @@ h1, h2, h3, h4, h5, h6 { font-weight: bold; }
 
 
 
-#map_canvas{width:700px; height:500px; margin:100px auto; display:block; border:2px solid #ccc;}
+#map_canvas{-webkit-perspective: 800; perspective: 800; background:#0c1d73;width:700px; height:500px; margin:100px auto; display:block; border:2px solid #ccc;}
 
 
+#cat{background:url(/img/cat.gif) 0 0 no-repeat; width:100px; height:70px; display:block;}
 
 
 

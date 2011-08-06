@@ -156,31 +156,32 @@
 (function(global){
 	var Module = (function(){
 		var socket = false,
-			item = document.getElementById('item');
+			cat = document.getElementById('cat')
+			position = {x:0,y:0,z:0};
 		
 		
 		
 		var init = function(){
-			// this.socket = io.connect('http://' + window.location.hostname + ':8080');
-
-			socket = io.connect('http://' + window.location.hostname + ':8080/acc');
 			
+			socket = io.connect('http://' + window.location.hostname + ':8080/acc');
+
 			// socket connected
 			socket.on('connect', function (data) {
-				
-				item.style.display = 'block';
-				item.style.width = '100px';
-				item.style.backgroundColor = '#fcc';
-				
+								
 				socket.on('touch', function (data) {
 
-				
-					item.style.marginLeft = parseInt(data.x * 2) + 'px';
-					item.style.marginTop = parseInt(data.y * 2) + 'px';					
+					cat.style.marginLeft = parseInt(data.x * 3) + 'px';
+					cat.style.marginTop = parseInt(data.y * 2) + 'px';					
 				});
 				
 				
-
+				
+				socket.on('move', function (data) {
+					var transform = 'translate3d(' + (data.x * 10) + 'px, ' + (data.y * 10) + 'px, ' + (data.y * 10) + 'px)';
+					cat.style.MozTransform = transform;
+					cat.style.webkitTransform = transform;
+				});
+				
 				
 			 });
 			
@@ -189,6 +190,14 @@
 			    var touch = event.touches[0];
 			    socket.emit( 'remotelog', { x : touch.pageX, y : touch.pageY } );
 			}, false);
+			
+			window.ondevicemotion = function(event) {
+				socket.emit( 'movement', { 
+					x : event.accelerationIncludingGravity.x,
+					y : event.accelerationIncludingGravity.y,
+					y : event.accelerationIncludingGravity.z
+				} );
+			}
 			
 			
 
@@ -202,8 +211,8 @@
 	})();
 	
 	
-	global.app = Module;
+	global.catapp = Module;
 })(this);
 
-// window.maps.init();
-window.app.init();
+
+
