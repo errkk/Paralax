@@ -30,10 +30,6 @@ io.sockets.on('connection', function (socket) {
 	});
 });
 
-
-
-// app.get('/', function(req, res){
-// 	console.log(__dirname + '/public');
-// });
+// Serve Static Files with express
 app.use(express.static(__dirname + '/public'));
-app.listen(3001);
+app.listen(3000);
