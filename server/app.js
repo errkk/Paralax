@@ -1,4 +1,6 @@
-var io = require('socket.io').listen(8080);
+var io = require('socket.io').listen(8080),
+	express = require("express"),
+	app = express.createServer();
 
 var locations =[];
 
@@ -28,4 +30,10 @@ io.sockets.on('connection', function (socket) {
 	});
 });
 
-// latLng: { Na: 51.48802991581375, Oa: -0.171754455566429 }
+
+
+// app.get('/', function(req, res){
+// 	console.log(__dirname + '/public');
+// });
+app.use(express.static(__dirname + '/public'));
+app.listen(3001);
