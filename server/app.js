@@ -32,4 +32,4 @@ io.sockets.on('connection', function (socket) {
 
 // Serve Static Files with express
 app.use(express.static(__dirname + '/public'));
-app.listen(3000);
+app.listen(80);
