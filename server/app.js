@@ -38,17 +38,27 @@ app.listen(80);
 
 var acc = io.of('/acc');
 
+var state = 1;
+
 acc.on('connection', function (socket) {
 
 	socket.emit('connect', { message : 'hello' } );
 
 
-
-	socket.on('remotelog',function(data){	
+	// screen touched
+	socket.on('touchmove',function(data){	
 		socket.broadcast.emit('touch', data );
 	});
-	socket.on('movement',function(data){	
-		socket.broadcast.emit('move', data );
+	
+	socket.on('remotelog',function(data){	
+		console.log(data);
+	});
+	
+	socket.on('statechange',function(data){	
+		if( data !== state ){
+			socket.broadcast.emit('statechanged', data );
+			state = data;
+		}
 	});
 });
 

@@ -156,9 +156,13 @@
 (function(global){
 	var Module = (function(){
 		var socket = false,
-			cat = document.getElementById('cat')
-			position = {x:0,y:0,z:0};
+			cat = document.getElementById('cat'),
+			infop = document.getElementById('info'),
+			mainwindow = document.getElementById('main'),
+			position = {x:0,y:0,z:0},
+			state = 1;
 		
+	
 		
 		
 		var init = function(){
@@ -176,10 +180,18 @@
 				
 				
 				
-				socket.on('move', function (data) {
+				socket.on('move3d', function (data) {
 					var transform = 'translate3d(' + (data.x * 10) + 'px, ' + (data.y * 10) + 'px, ' + (data.y * 10) + 'px)';
 					cat.style.MozTransform = transform;
 					cat.style.webkitTransform = transform;
+				});
+				
+				socket.on('statechanged', function (data) {
+					if( data == 0 ){
+						mainwindow.style.backgroundColor = '#000';
+					}else{
+						mainwindow.style.backgroundColor = '#fff';
+					}
 				});
 				
 				
@@ -188,19 +200,35 @@
 			document.addEventListener('touchmove', function(event) {
 			    event.preventDefault();
 			    var touch = event.touches[0];
-			    socket.emit( 'remotelog', { x : touch.pageX, y : touch.pageY } );
+			    socket.emit( 'touchmove', { x : touch.pageX, y : touch.pageY } );
 			}, false);
 			
+			// check if the phone is upside down
+			var offness = 0, onness = 0;
 			window.ondevicemotion = function(event) {
-				socket.emit( 'movement', { 
-					x : event.accelerationIncludingGravity.x,
-					y : event.accelerationIncludingGravity.y,
-					y : event.accelerationIncludingGravity.z
-				} );
+				if( event.accelerationIncludingGravity.z > 8 && state === 1 ){
+					offness ++;
+					
+				}else if( event.accelerationIncludingGravity.z < 8 && state === 0 ){
+					onness ++;
+				}
+				
+				if( offness > 20 ){
+					state = 0;
+					offness = 0;
+					socket.emit('statechange', state );
+
+				}else if( onness > 20 ){
+					state = 1;			
+					onness = 0;			
+					socket.emit('statechange', state );							
+				}
+				
+				infop.innerHTML = 'on: ' + onness + ', off: ' + offness;
+				
 			}
 			
 			
-
 		}
 		
 		return {
