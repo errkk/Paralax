@@ -33,3 +33,19 @@ io.sockets.on('connection', function (socket) {
 // Serve Static Files with express
 app.use(express.static(__dirname + '/public'));
 app.listen(80);
+
+
+
+var acc = io.of('/acc');
+
+acc.on('connection', function (socket) {
+
+	socket.emit('connect', { message : 'hello' } );
+
+
+
+	socket.on('remotelog',function(data){	
+		socket.broadcast.emit('touch', data );
+	});
+});
+

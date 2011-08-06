@@ -153,5 +153,57 @@
 
 
 
+(function(global){
+	var Module = (function(){
+		var socket = false,
+			item = document.getElementById('item');
+		
+		
+		
+		var init = function(){
+			// this.socket = io.connect('http://' + window.location.hostname + ':8080');
 
-window.maps.init()
+			socket = io.connect('http://' + window.location.hostname + ':8080/acc');
+			
+			// socket connected
+			socket.on('connect', function (data) {
+				
+				item.style.display = 'block';
+				item.style.width = '100px';
+				item.style.backgroundColor = '#fcc';
+				
+				socket.on('touch', function (data) {
+
+				
+					item.style.marginLeft = parseInt(data.x * 2) + 'px';
+					item.style.marginTop = parseInt(data.y * 2) + 'px';					
+				});
+				
+				
+
+				
+			 });
+			
+			document.addEventListener('touchmove', function(event) {
+			    event.preventDefault();
+			    var touch = event.touches[0];
+			    socket.emit( 'remotelog', { x : touch.pageX, y : touch.pageY } );
+			}, false);
+			
+			
+
+		}
+		
+		return {
+			init : init
+
+		}
+		
+	})();
+	
+	
+	global.app = Module;
+})(this);
+
+// window.maps.init();
+window.app.init();
