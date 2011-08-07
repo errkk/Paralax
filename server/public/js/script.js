@@ -1,6 +1,9 @@
 
 
 
+
+
+
 (function(global){
 	var Module = (function(){
 		var socket,
@@ -162,16 +165,27 @@
 			position = {x:0,y:0,z:0},
 			state = 1;
 		
-	
 		
 		
 		var init = function(){
+			
+			document.getElementById('request_permission').addEventListener('click', function() {
+			  window.webkitNotifications.requestPermission();
+			}, false);
 			
 			socket = io.connect('http://' + window.location.hostname + ':8080/acc');
 
 			// socket connected
 			socket.on('connect', function (data) {
-								
+				
+				socket.on('notification', function(data){
+					if( window.webkitNotifications.checkPermission() == 0 ){
+						window.webkitNotifications.createNotification('', 'Connected', data.message).show();			
+					}else{
+						alert(data.message);
+					}	
+				});
+				
 				socket.on('touch', function (data) {
 
 					cat.style.marginLeft = parseInt(data.x * 3) + 'px';
@@ -196,6 +210,9 @@
 				
 				
 			 });
+			
+
+			
 			
 			document.addEventListener('touchmove', function(event) {
 			    event.preventDefault();

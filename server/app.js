@@ -58,7 +58,24 @@ acc.on('connection', function (socket) {
 		if( data !== state ){
 			socket.broadcast.emit('statechanged', data );
 			state = data;
+			
+			socket.broadcast.emit('notification', 'State Changed' );
 		}
 	});
 });
+
+
+var acc = io.of('/paralax');
+
+acc.on('connection', function (socket) {
+
+	socket.emit('connect', { message : 'hello' } );
+	
+	// screen touched
+	socket.on('swipe',function(data){	
+		socket.broadcast.emit('swipe', data );
+	});
+
+});
+
 

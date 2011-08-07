@@ -160,18 +160,23 @@ h1, h2, h3, h4, h5, h6 { font-weight: bold; }
  * Author: 
  */
 
-
-#main{height:100%;}
+body{ background:#eee;}
+#main{height:100%; position:relative;}
 #map_canvas{position:relative; background:#0c1d73;width:700px; height:500px; margin:100px auto; display:block; border:2px solid #ccc;}
 
 
 #cat{background:url(/img/cat.gif) 0 0 no-repeat; width:100px; height:70px; display:block;}
 
+#para{ box-shadow:0 10px 5px #999; overflow:hidden;border:8px solid #fff; position:relative; margin:50px auto; width:578px; height:650px; background:url(/img/back.jpg) 0 0 no-repeat;}
+	#para div{position:absolute;}
+	#roof{z-index:3;width:678px; height:200px; background:url(/img/roof.png) 0 0 no-repeat;}
+	#l1{z-index:3;width:678px; height:678px; background:url(/img/l1.png) 0 0 no-repeat;}	
+	#l2{z-index:1;width:678px; height:678px; background:url(/img/l2.png) 0 0 no-repeat;}	
+	#train{z-index:2; top: 198px;width:1127px; height:210px; left:600px; background:url(/img/train.png) 0 0 no-repeat;}
+	#smalltrain{z-index:0; top: 215px;width:400px; height:110px; left:-400px; background:url(/img/smalltrain.png) 0 0 no-repeat;}	
 
 
-
-
-
+#mousething{z-index:10; position:absolute; width:100%; height:100%; }
 
 
 
