@@ -79,12 +79,6 @@ jQuery(document).ready( function(){
 
 
 
-window.ondevicemotion(function(event){
-	event.accelerationIncludingGravity.z;
-	event.accelerationIncludingGravity.x;
-	event.accelerationIncludingGravity.y;
-	
-});
 
 
 
